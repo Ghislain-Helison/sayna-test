@@ -10,3 +10,7 @@ La ligne de code precedent recherche la presence de [quote:destination_name] dan
 
 *j'ai changer la ligne "(strpos($text, '[user:first_name]') !== false) and $text = str_replace('[user:first_name]'       , ucfirst(mb_strtolower($_user->firstname)), $text);"
 car : cette verification n est  pas strictement necessaire car la fonction str_replace elle meme ne produit aucun effet si la chaine de charactere a remplacer n'est pas presente dans le texte
+
+deuxiem commit
+j'ai extrait dans la foction ComputeText les fonctions replaceQuotePlaceholders, replaceDestinationLink , la fonction compute text est trop long et imbique plusieus fonction a l'interrieur , j'ai decider d'extraire ces deux fonction pour avoir un code 
+plus claire et pour cibler facilement la fonction qui presente une erreur.

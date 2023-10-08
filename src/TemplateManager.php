@@ -15,48 +15,59 @@ class TemplateManager
         return $replaced;
     }
 
+    private function replaceQuotePlaceholders($text, $quote, $usefulObject, $destination)
+    {
+        $containsSummaryHtml = strpos($text, '[quote:summary_html]');
+        $containsSummary = strpos($text, '[quote:summary]');
+
+        if ($containsSummaryHtml !== false || $containsSummary !== false) {
+            if ($containsSummaryHtml !== false) {
+                $text = str_replace('[quote:summary_html]', Quote::renderHtml($quote), $text);
+            }
+            if ($containsSummary !== false) {
+                $text = str_replace('[quote:summary]', Quote::renderText($quote), $text);
+            }
+        }
+
+        if (isset($destination)) {
+            $text = str_replace('[quote:destination_name]', $destination->countryName, $text);
+        }
+
+        return $text;
+    }
+
+    private function replaceDestinationLink($text, $usefulObject, $destination, $quote)
+    {
+        $text = str_replace(
+            '[quote:destination_link]',
+            $usefulObject->url . '/' . $destination->countryName . '/quote/' . $quote->id,
+            $text
+        );
+
+        return $text;
+    }
+
     private function computeText($text, array $data)
     {
         $APPLICATION_CONTEXT = ApplicationContext::getInstance();
-
         $quote = (isset($data['quote']) and $data['quote'] instanceof Quote) ? $data['quote'] : null;
 
-        if ($quote)
-        {
+        if ($quote) {
             $_quoteFromRepository = QuoteRepository::getInstance()->getById($quote->id);
             $usefulObject = SiteRepository::getInstance()->getById($quote->siteId);
             $destinationOfQuote = DestinationRepository::getInstance()->getById($quote->destinationId);
+            $destination = null;
 
-            if(strpos($text, '[quote:destination_link]') !== false){
+            if (strpos($text, '[quote:destination_link]') !== false) {
                 $destination = $destinationOfQuote;
             }
 
-            $containsSummaryHtml = strpos($text, '[quote:summary_html]');
-            $containsSummary     = strpos($text, '[quote:summary]');
+            $text = $this->replaceQuotePlaceholders($text, $_quoteFromRepository, $usefulObject, $destination);
 
-            if ($containsSummaryHtml !== false || $containsSummary !== false) {
-                if ($containsSummaryHtml !== false) {
-                    $text = str_replace(
-                        '[quote:summary_html]',
-                        Quote::renderHtml($_quoteFromRepository),
-                        $text
-                    );
-                }
-                if ($containsSummary !== false) {
-                    $text = str_replace(
-                        '[quote:summary]',
-                        Quote::renderText($_quoteFromRepository),
-                        $text
-                    );
-                }
+            if (isset($destination)) {
+                $text = $this->replaceDestinationLink($text, $usefulObject, $destination, $_quoteFromRepository);
             }
-
         }
-
-        if (isset($destination))
-            $text = str_replace('[quote:destination_link]', $usefulObject->url . '/' . $destination->countryName . '/quote/' . $_quoteFromRepository->id, $text);
-        else
-            $text = str_replace('[quote:destination_link]', '', $text);
 
         /*
          * USER
@@ -69,4 +80,5 @@ class TemplateManager
 
         return $text;
     }
+
 }
