@@ -14,3 +14,6 @@ car : cette verification n est  pas strictement necessaire car la fonction str_r
 deuxiem commit
 j'ai extrait dans la foction ComputeText les fonctions replaceQuotePlaceholders, replaceDestinationLink , la fonction compute text est trop long et imbique plusieus fonction a l'interrieur , j'ai decider d'extraire ces deux fonction pour avoir un code 
 plus claire et pour cibler facilement la fonction qui presente une erreur.
+
+troisieme commit 
+J'ai ajouter un commentaire sur les deux fonction que j'ai extrait dans computeText les commentaire sont exxentiel pour que les autres puisse comprendre facilement le code

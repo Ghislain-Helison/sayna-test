@@ -15,6 +15,17 @@ class TemplateManager
         return $replaced;
     }
 
+    /**
+     * Recherche et remplace les placeholders relatifs aux Quote dans le texte
+     *
+     * @param string $text Le texte a traite
+     * @param Quote $quote L'objet Quote actuel
+     * @param Site $usefulObject L'objet Site utile
+     * @param Destination|null $destination L'objet Destination s'il est present
+     *
+     * @return string Le texte avec les placeholders des Quote remplacés.
+     */
+
     private function replaceQuotePlaceholders($text, $quote, $usefulObject, $destination)
     {
         $containsSummaryHtml = strpos($text, '[quote:summary_html]');
@@ -36,6 +47,16 @@ class TemplateManager
         return $text;
     }
 
+    /**
+     * Remplace le placeholder '[quote:destination_link]' par le lien de la destination dans le text
+     *
+     * @param string $text Le texte a traiter
+     * @param Site $usefulObject L'objet Site utile
+     * @param Destination $destination L'objet Destination
+     * @param Quote $quote L'objet Quote actuel
+     *
+     * @return string Le texte avec le placeholder '[quote:destination_link]' remplace par le lien de la destination
+     */
     private function replaceDestinationLink($text, $usefulObject, $destination, $quote)
     {
         $text = str_replace(
