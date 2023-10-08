@@ -17,3 +17,5 @@ plus claire et pour cibler facilement la fonction qui presente une erreur.
 
 troisieme commit 
 J'ai ajouter un commentaire sur les deux fonction que j'ai extrait dans computeText les commentaire sont exxentiel pour que les autres puisse comprendre facilement le code
+
+pour tester le programme j'ai simplement executer le text existant avec make example 
